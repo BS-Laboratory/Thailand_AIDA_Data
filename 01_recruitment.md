@@ -6,7 +6,8 @@
     - ขอข้อมูลช่องทางติดต่อ เช่นเบอร์โทรศัพท์ หรือ อีเมล์ พร้อมชื่อ/สกุล
 2. ผู้ประสานงานโครงการติดต่อนัด อาสาสมัครที่เข้าเกณฑ์การคัดเลือก เพื่อมาเจาะเลือด
 
-## เกณฑ์การคัดเลือก (inclusion criteria)
+## เกณฑ์การคัดเลือก (inclusion criteria) 
+* Similar to criteria used for Samsung Medical Center
 
 ### Inclusion Criteria
 1. เป็นอาสาสมัครในโครงการ SI-Health ที่ได้รับการทำ whole genome genotyping เรียบร้อยแล้ว 
