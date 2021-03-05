@@ -19,7 +19,7 @@
 2. Having a vacination history within the past 8 weeks.
 3. History of diabetes mellitus (including pregnacy-induced diabetes)
     - Taking any diabetic related medication or supplements 
-    - FBS > 110 mg/dL OR Fasting HbA1C > 6.5%
+    - FBS > 110 mg/dL OR Fasting HbA1C > 6.0%
 4. History of cardiovascular disease
     - hospitalized for MI, stroke, angina pectoris, heart failure 
     - Systolic blood pressure > **180** mmHg or diastolic blood pressure > 110 mmHg
