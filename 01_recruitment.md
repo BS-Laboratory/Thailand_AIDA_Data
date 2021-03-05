@@ -5,6 +5,7 @@
 1. อาสาสมัครที่ได้รับข้อมูลจากโปสเตอร์ หรือ ประกาศประชาสัมพันธ์ [ทำแบบสอบถามเพื่อให้ข้อมูลและคัดกรองอาสาสมัคร](https://docs.google.com/forms/d/e/1FAIpQLSfHyFMP5PS0_-a3Se7pEsbTL220ntNUYHxYDywi00G2UTgiAg/viewform) 
     - ขอข้อมูลช่องทางติดต่อ เช่นเบอร์โทรศัพท์ หรือ อีเมล์ พร้อมชื่อ/สกุล
 2. ผู้ประสานงานโครงการติดต่อนัด อาสาสมัครที่เข้าเกณฑ์การคัดเลือก เพื่อมาเจาะเลือด
+3. เก็บข้อมูลอาสาสมัครเพิ่มเติม โดยใช้[แบบสอบถาม](https://forms.gle/Vr5ACETGwrKBjfCR6)
 
 ## เกณฑ์การคัดเลือก (inclusion criteria) 
 * Similar to criteria used for Samsung Medical Center
