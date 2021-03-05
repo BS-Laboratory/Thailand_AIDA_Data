@@ -17,9 +17,9 @@
 ### Exclusion Criteria
 1. Having active infection at the time of recruitment (Fever > 37.8C) or taking antibiotics
 2. Having a vacination history within the past 8 weeks.
-3. No history of diabetes mellitus (including pregnacy-induced diabetes)
-    - Not taking any diabetic related medication or supplements 
-    - FBS < 110 mg/dL OR Fasting HbA1C < 6.1%
+3. History of diabetes mellitus (including pregnacy-induced diabetes)
+    - Taking any diabetic related medication or supplements 
+    - FBS > 110 mg/dL OR Fasting HbA1C > 6.5%
 4. History of cardiovascular disease
     - hospitalized for MI, stroke, angina pectoris, heart failure 
     - Systolic blood pressure > **180** mmHg or diastolic blood pressure > 110 mmHg
