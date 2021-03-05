@@ -45,5 +45,5 @@
 
 ## การเจาะเลือด
 เจาะเลือดจำนวน 20(**?**) มิลลิลิตร โดยแบ่งเป็น
-- 5 ml clot blood
-- 15 ml EDTA blood
+- 5 ml clot blood (for DNA extraction)
+- 15 ml heparinized blood (for PBMC separation)
