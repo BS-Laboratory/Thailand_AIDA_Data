@@ -1,8 +1,7 @@
-
 ---
 title: "Data management for AIDA data"
 author: "Kemmapon Chumchuen"
-date: "2021-04-05"
+date: "2020-05-25"
 output: html_document
 ---
 
@@ -10,11 +9,12 @@ output: html_document
 ## Load packages and dataset
 
 - ข้อมูลตัวอย่างโหลดมาจาก [Google Form AIDA CRF](https://docs.google.com/forms/u/2/d/1p0AwxOOflxAQL8AvVncuBvGUMocvGtxQNRcl5_zJpAY/edit?usp=docs_home&ths=true)
-```{r}
+```{r, message=F}
 library(epicalc) 
 library(readxl) 
 library(plyr) 
-library(splitstackshape) 
+library(splitstackshape)
+library(BSL)
 
 
 Sys.setlocale("LC_CTYPE", "thai")
@@ -114,50 +114,29 @@ colnames(scs.dat)
 
 Generate columns for dx_disease to match REDCap template.
 
-Changing variable name for concat.split.expanded function.
+Changing variable name for checkbox_ functions.
 ```{r}
 names(scs.dat)[30] <- "dxnosis"
 colnames(scs.dat)
 ```
 
-Generating columns based on the level obtained
+Generating columns based on the level obtained using BSL package
+
+Preview and check the order
 ```{r}
-add.diag.new <- scs.dat[,30] ; add.diag.new
-add.diag.new <- concat.split.expanded(add.diag.new, "dxnosis", fill = 0, drop = TRUE,
-                      sep = ",", type = "character")
-colnames(add.diag.new)
+preview <- checkbox_preview(data = scs.dat, var = dxnosis)
+preview
+colnames(preview) 
+```
+The order is 3,2,4,5,0,8,6,7
+
+Assign the names based on order
+```{r}
+dx.redcap <- checkbox_assign(preview,prefix = "dx_disease__",suffix = c(3,2,4,5,0,8,6,7))
+dx.redcap
+des(dx.redcap)
 ```
 
-These commands are for channing the name of obtained levels to match the template
-```{r}
-names(add.diag.new)[names(add.diag.new) == "dxnosis_ไม่เคยได้รับการวินิจฉัยว่าเป็นโรคข้างต้น"] <- "dx_disease___0"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคอัมพาตหรือโรคสมองขาดเลือด"] <- "dx_disease___1"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคไขมันในเลือดสูง (ไขมันในเลือดสูง/ ระดับคอเลสเทอรอล HDL ต่า)"] <- "dx_disease___2"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคความดันโลหิตสูง"] <- "dx_disease___3"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคเบาหวานหรือน้าตาลในเลือดสูง"] <- "dx_disease___4"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคหัวใจ (ลิ้นหัวใจรั่ว/ หัวใจล้มเหลว อื่น ๆ )"] <- "dx_disease___5"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_ภาวะหัวใจขาดเลือด"] <- "dx_disease___6"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_ภาวะหัวใจเต้นผิดจังหวะ"] <- "dx_disease___7"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_ภาวะกล้ามเนื้อหัวใจตาย"] <- "dx_disease___8"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคตับจากแอลกอฮอล์"] <- "dx_disease___9"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคแผลในกระเพาะอาหาร"] <- "dx_disease___10"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_นิ่วในถุงน้าดี"] <- "dx_disease___11"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคเกาต์"] <- "dx_disease___12"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคกระดูกพรุน"] <- "dx_disease___13"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคปริทันต์อักเสบ"] <- "dx_disease___14"
-names(add.diag.new)[names(add.diag.new) == "dxnosis_โรคแพ้ภูมิตนเอง"] <- "dx_disease___15"
-colnames(add.diag.new)
-```
-
-For ordering multiple choice diagnosis variable
-```{r}
-#add.diag.new <- add.diag.new[,c(5,16,8,9,11,15,3,4,2,10,13,1,7,6,12,14)]
-```
-
-```{r}
-add.diag.new
-des(scs.dat)
-```
 
 Delete the google format column 
 ```{r}
@@ -171,9 +150,9 @@ colnames(scs.dat)[30:36]  <- imp.col.scr3
 colnames(scs.dat)
 ```
 
-Generate columns for taking_hormones to match REDCap template.
+Generate columns for taking_hormones to match REDCap template using BSL package
 
-Changing variable name for concat.split.expanded function.
+Changing the variable name for checkbox_ functions.
 
 ```{r}
 names(scs.dat)[37] <- "drug.horm"
@@ -181,107 +160,54 @@ colnames(scs.dat)
 ```
 
 
-Generating columns based on the level obtained
+Generating columns based on the level obtained and its order
+
 ```{r}
-add.diag.new2 <- scs.dat[,37]
-add.diag.new2 <- concat.split.expanded(add.diag.new2, "drug.horm", fill = 0, drop = TRUE,
-                                      sep = ",", type = "character")
-colnames(add.diag.new2)
+preview2 <- checkbox_preview(scs.dat,var = drug.horm) 
+colnames(preview2)
 ```
 
-These commands are for channing the name of obtained levels to match the template
+The order is 3,1,0,9,10,x,5,8,6,11,y,7,4,2
+There're 2 "other" value, assign it to 12 and 13 (last value is 11)
+12 is ยาผีบอก, and 13 is ยาลูกกลอน
+
 ```{r}
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ไม่ได้รับประทานยาใดๆ"] <- "taking_hormones___0"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_โกรทฮอร์โมน"] <- "taking_hormones___1"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ฮอร์โมนอินซูลิน/ ยาโรคเบาหวาน"] <- "taking_hormones___2"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ผลิตภัณฑ์ยาจากพลาสมา"] <- "taking_hormones___3"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_อื่น ๆ (ยาแผนจีนโบราณ/ ยาอายุรเวท)"] <- "taking_hormones___4"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ยานอนหลับ"] <- "taking_hormones___5"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ยาลดความดันโลหิต (ยารักษาความดัน/ Diovan/ Renibase)"] <- "taking_hormones___6"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ยาสเตียรอยด์"] <- "taking_hormones___7"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ยาแก้แพ้ (Allergic drugs/ Antihistamines)"] <- "taking_hormones___8"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ยากดภูมิคุ้มกัน"] <- "taking_hormones___9"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ยาปฏิชีวนะ"] <- "taking_hormones___10"
-names(add.diag.new2)[names(add.diag.new2) == "drug.horm_ยาลดไขมันในเลือด (ยาลดคอเลสเทอรอล ชนิด LDL/ Mevalotin/ ลิปิโอดอล)"] <- "taking_hormones___11"
-colnames(add.diag.new2)
+drug.redcap <- checkbox_assign(preview2,prefix = "taking_hormones__", suffix = c(3,1,0,
+                              9,10,12,5,8,6,11,13,7,4,2))
+drug.redcap
 ```
 
-
-### These commands are used in case of having other drugs in the dataset 
-
-Add a blank other column in
-
 ```{r}
-add.diag.new2$taking_hormones_oth  <- 0
-```
-
-Create a vector to exclude the registered drug, crete new dataset with only additional other drugs
-
-```{r}
-col <- c("taking_hormones___0","taking_hormones___1","taking_hormones___2",
-         "taking_hormones___3","taking_hormones___4","taking_hormones___5",
-         "taking_hormones___6","taking_hormones___7","taking_hormones___8",
-         "taking_hormones___9","taking_hormones___10","taking_hormones___11")
-
-add.diag.new3 <-   (add.diag.new2[, -which(names(add.diag.new2) %in% col)])
-
-add.diag.new3
-```
-
-Fill drug names with column names
-
-```{r}
-add.diag.new3$taking_hormones_oth <- apply(add.diag.new3, 1,function(x) paste(names(add.diag.new3)[x > 0], collapse = "-"))
-```
-
-Delete the column name prefix, and create another other column (binary) to match REDCap
-```{r}
-oth <- add.diag.new3$taking_hormones_oth
-oth <- gsub(".*_(.*)", "\\1", oth)
-add.diag.new3$taking_hormones_oth <- oth
-
-
-add.diag.new3$taking_hormones___12 <- apply(add.diag.new3, 1,
-                                            function(x) ifelse(any(x == 1), 1, 0))
-```
-
-Delete unnecessary column
-
-```{r}
-add.diag.new3 <- add.diag.new3[,c(4,3)]
-add.diag.new3
-
-add.diag.new2 <- add.diag.new2[,-c(6,11,15)]
-add.diag.new2
-
-des(scs.dat)
+drug.redcap <- checkbox_oth(drug.redcap, other = c(5,6), 
+                            other.names = c("ยาผีบอก","ยาลูกกลอน"),
+                            new.col = "taking_hormones__oth")
+drug.redcap
+des(drug.redcap)
 ```
 
 Delete the google format column and merged the new columns, **always check the colum number**
 
 ```{r}
-
 scs.dat <- scs.dat[,-37]
 ```
 
 Add 3 sets of newly generated columns
 
 ```{r}
-scs.dat <- cbind(scs.dat[1:29],add.diag.new,scs.dat[30:36],add.diag.new2,
-                 add.diag.new3,scs.dat[37:38])
+scs.dat <- cbind(scs.dat[1:29],dx.redcap,scs.dat[30:36],drug.redcap,scs.dat[37:38])
 des(scs.dat)
 
 ```
 
 Checking
 ```{r}
-scs.dat[,50:60]
+scs.dat[,50:59]
 ```
 
 Change the last variable name, **always check for the last column**, as it can be varied due to added levels
 ```{r}
-names(scs.dat)[59] <- "taking_hormone_period"
-names(scs.dat)[60] <- "taking_vaccine"
+names(scs.dat)[58] <- "taking_hormone_period"
+names(scs.dat)[59] <- "taking_vaccine"
 des(scs.dat)
 ```
 
@@ -304,9 +230,9 @@ des(scs.dat)
 yn <- c("ใช่","ไม่ใช่")
 hv <- c("เคย","ไม่เคย")
 
-scs.dat[,9:60] <- as.data.frame(sapply(scs.dat[,9:60],
+scs.dat[,9:59] <- as.data.frame(sapply(scs.dat[,9:59],
                                 mapvalues, from = yn, to = c(1,0)))
-scs.dat[,9:60] <- as.data.frame(sapply(scs.dat[,9:60],
+scs.dat[,9:59] <- as.data.frame(sapply(scs.dat[,9:59],
                                        mapvalues, from = hv, to = c(1,0)))
 
 sm <- c("ไม่เคยสูบ","หยุดสูบแล้ว","สูบอยู่")
@@ -337,6 +263,7 @@ This file is ready to import to REDCap template
 dat.ready.imp <- as.data.frame(cbind(scr.dat,scs.dat))
 
 imp.dat <- rbind.fill(imp.template,dat.ready.imp)
+des(imp.dat)
 ```
 
 In case of data entry via google form, don't forget to add record_id in R and delete the last extra column 
