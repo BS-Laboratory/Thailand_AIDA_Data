@@ -51,4 +51,4 @@
 ## การเจาะเลือด
 เจาะเลือดจำนวน 20(**?**) มิลลิลิตร โดยแบ่งเป็น
 - 5 ml clot blood (for DNA extraction)
-- 10 ml heparinized blood (for PBMC separation)
+- 8 ml CPT tube (for PBMC separation)
